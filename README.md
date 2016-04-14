@@ -4,7 +4,7 @@
 # 为什么封装WZXNetworking
 这是一个容错性非常吓人的框架。
 它是采用链式编程思想封装。
-```swift
+```objc
  [[WZXNetworkManager manager].setRequest(@"http://192.168.1.40:8001").RequestType(POST).HTTPHeader(nil).Parameters(nil).RequestSerialize(RequestSerializerHTTP).ResponseSerialize(ResponseSerializerJSON) startRequestWithSuccess:^(id response) {
         
         NSLog(@"success");
@@ -15,7 +15,7 @@
 ```
 在这里除了`.setRequest(url)`和`startRequestWithSuccess failure`方法，其他都是不必要的。
 你可以这样:
-```swift
+```objc
 [[WZXNetworkManager manager].setRequest(@"http://192.168.1.40:8001") startRequestWithSuccess:^(id response) {
        
         NSLog(@"success");
@@ -28,7 +28,7 @@
 
 ## 打个比方：
 #### 换成集中式API封装应该是这样的:
-```
+```objc
 - (void)GET:(NSString *)url
         parameters:(id)Parameters
         success:(SuccessBlock)success
@@ -36,7 +36,7 @@
 ```
 当你要添加一个Version属性做API版本判断的时候，你能怎么办？只能重写方法，在方法中加入一个Version参数，然后所有使用的网络请求都要改变方法。
 #### 换成分布式API封装我们则不考虑对比了..
-```swift
+```objc
 GeneralAPI *apiGeGet            = [[GeneralAPI alloc] initWithRequestMethod:@"get"];
 apiGeGet.apiRequestMethodType      = RequestMethodTypeGET;
 apiGeGet.apiRequestSerializerType  = RequestSerializerTypeHTTP;
@@ -53,7 +53,7 @@ apiGeGet.apiResponseSerializerType = ResponseSerializerTypeHTTP;
 
 #### 再换成WZXNetworking
 我们要做的只是再添加一个方法和一个成员变量，然后在原有方法后面加一个.method()
-```swift
+```objc
 - (WZXNetworkManager * (^) (id some))method {
   return ^WZXNetworkManager (id some) {
      self.XXX = some
@@ -61,7 +61,7 @@ apiGeGet.apiResponseSerializerType = ResponseSerializerTypeHTTP;
   }
 }
 ```
-```swift
+```objc
 [[WZXNetworkManager manager].setRequest(@"http://192.168.1.40:8001").method() startRequestWithSuccess:^(id response) {
        
         NSLog(@"success");
