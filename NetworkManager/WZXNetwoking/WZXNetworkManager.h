@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AFHTTPSessionManager.h"
-@interface NetworkManager : AFHTTPSessionManager
+@interface WZXNetworkManager : AFHTTPSessionManager
 typedef NS_ENUM(NSInteger,RequestType){
     GET,
     POST,
@@ -33,38 +33,38 @@ typedef NS_ENUM(NSInteger,ApiVersion){
     V2
 };
 
-+ (NetworkManager *)manager;
++ (WZXNetworkManager *)manager;
 
 /** 
  *  @method      填充网址
  */
-- (NetworkManager* (^)(NSString * url))setRequest;
+- (WZXNetworkManager* (^)(NSString * url))setRequest;
 
 /**
  *  @method      填充请求类型，默认为GET
  */
-- (NetworkManager* (^)(RequestType type))RequestType;
+- (WZXNetworkManager* (^)(RequestType type))RequestType;
 
 /**
  *  @method      填充参数
  */
-- (NetworkManager* (^)(id parameters))Parameters;
+- (WZXNetworkManager* (^)(id parameters))Parameters;
 
 /**
  *  @method      填充请求头
  */
-- (NetworkManager* (^)(NSDictionary * HTTPHeaderDic))HTTPHeader;
+- (WZXNetworkManager* (^)(NSDictionary * HTTPHeaderDic))HTTPHeader;
 
 /**
  *  @method      更改数据发送类型，默认HTTP
  */
-- (NetworkManager* (^)(RequestSerializer))RequestSerialize;
+- (WZXNetworkManager* (^)(RequestSerializer))RequestSerialize;
 
 /**
  *  @method      更改数据接收类型，默认JSON
  */
-- (NetworkManager* (^)(ResponseSerializer))ResponseSerialize;
-- (NetworkManager* (^)(ApiVersion))Version;
+- (WZXNetworkManager* (^)(ResponseSerializer))ResponseSerialize;
+- (WZXNetworkManager* (^)(ApiVersion))Version;
 
 /**
  *  @method      发送请求

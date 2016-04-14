@@ -6,8 +6,8 @@
 //  Copyright © 2016年 wzx. All rights reserved.
 //
 
-#import "NetworkManager.h"
-@interface NetworkManager()
+#import "WZXNetworkManager.h"
+@interface WZXNetworkManager()
 @property (nonatomic,copy)NSString * url;
 @property (nonatomic,assign)RequestType wRequestType;
 @property (nonatomic,assign)RequestSerializer requestSerialize;
@@ -16,68 +16,68 @@
 @property (nonatomic,copy)NSDictionary * wHTTPHeader;
 @property (nonatomic,assign)ApiVersion version;
 @end
-@implementation NetworkManager
+@implementation WZXNetworkManager
 
-+ (NetworkManager *)manager {
-    static NetworkManager * manager = nil;
++ (WZXNetworkManager *)manager {
+    static WZXNetworkManager * manager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        manager = [[NetworkManager alloc]init];
+        manager = [[WZXNetworkManager alloc]init];
         [manager replace];
     });
     return manager;
 }
 
-- (NetworkManager *(^)(NSString *))setRequest {
-    return ^NetworkManager* (NSString * url) {
+- (WZXNetworkManager *(^)(NSString *))setRequest {
+    return ^WZXNetworkManager* (NSString * url) {
         self.url = url;
         return self;
     };
 }
 
-- (NetworkManager *(^)(RequestType))RequestType {
-    return ^NetworkManager* (RequestType type) {
+- (WZXNetworkManager *(^)(RequestType))RequestType {
+    return ^WZXNetworkManager* (RequestType type) {
         self.wRequestType = type;
         return self;
     };
 }
 
-- (NetworkManager* (^)(id parameters))Parameters {
-    return ^NetworkManager* (id parameters) {
+- (WZXNetworkManager* (^)(id parameters))Parameters {
+    return ^WZXNetworkManager* (id parameters) {
         self.parameters = parameters;
         return self;
     };
 }
-- (NetworkManager *(^)(NSDictionary *))HTTPHeader {
-    return ^NetworkManager* (NSDictionary * HTTPHeaderDic) {
+- (WZXNetworkManager *(^)(NSDictionary *))HTTPHeader {
+    return ^WZXNetworkManager* (NSDictionary * HTTPHeaderDic) {
         self.wHTTPHeader = HTTPHeaderDic;
         return self;
     };
 }
 
-- (NetworkManager *(^)(RequestSerializer))RequestSerialize {
-    return ^NetworkManager* (RequestSerializer requestSerializer) {
+- (WZXNetworkManager *(^)(RequestSerializer))RequestSerialize {
+    return ^WZXNetworkManager* (RequestSerializer requestSerializer) {
         self.requestSerialize = requestSerializer;
         return self;
     };
 }
 
-- (NetworkManager *(^)(ApiVersion))Version {
-    return ^NetworkManager * (ApiVersion version) {
+- (WZXNetworkManager *(^)(ApiVersion))Version {
+    return ^WZXNetworkManager * (ApiVersion version) {
         self.version = version;
         return self;
     };
 }
 
-- (NetworkManager *(^)(ResponseSerializer))ResponseSerialize {
-    return ^NetworkManager* (ResponseSerializer responseSerializer) {
+- (WZXNetworkManager *(^)(ResponseSerializer))ResponseSerialize {
+    return ^WZXNetworkManager* (ResponseSerializer responseSerializer) {
         self.responseSerialize = responseSerializer;
         return self;
     };
 }
 
 - (void)startRequestWithSuccess:(void (^)(id))success failure:(void (^)())failure {
-    NetworkManager * manager = [[self class]manager];
+    WZXNetworkManager * manager = [[self class]manager];
     //设置请求头
     [self setupRequestSerializerWithManager:manager];
     [self setupHTTPHeaderWithManager:manager];
@@ -138,7 +138,7 @@
     [self replace];
 }
 
-- (NetworkManager *)setupRequestSerializerWithManager:(NetworkManager *)manager {
+- (WZXNetworkManager *)setupRequestSerializerWithManager:(WZXNetworkManager *)manager {
     
     switch (self.requestSerialize) {
         case RequestSerializerJSON: {
@@ -155,7 +155,7 @@
     return manager;
 }
 
-- (NetworkManager *)setupResponseSerializerWithManager:(NetworkManager *)manager {
+- (WZXNetworkManager *)setupResponseSerializerWithManager:(WZXNetworkManager *)manager {
     switch (self.responseSerialize) {
         case ResponseSerializerJSON: {
             manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -171,7 +171,7 @@
     return manager;
 }
 
-- (NetworkManager *)setupHTTPHeaderWithManager:(NetworkManager *)manager {
+- (WZXNetworkManager *)setupHTTPHeaderWithManager:(WZXNetworkManager *)manager {
     for (NSString * key in self.wHTTPHeader.allKeys) {
         [manager.requestSerializer setValue:self.wHTTPHeader[key] forHTTPHeaderField:key];
     }
@@ -199,6 +199,7 @@
     return [NSString stringWithFormat:@"%@,%@",self.url,version];
 }
 
+//重置
 - (void)replace {
     self.url = nil;
     self.version = NONE;
